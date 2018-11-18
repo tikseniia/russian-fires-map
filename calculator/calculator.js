@@ -17,7 +17,6 @@ function countPercentage() {
   if (age < 16) {
     alert('В стаж идет только официальный опыт работы с 16 лет. Уверены?');
   }
-
   document.getElementById("salary").value = salary;
   document.getElementById("age").value = age;
   document.getElementById("exp").value = exp;
