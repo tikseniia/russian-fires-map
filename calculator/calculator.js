@@ -4,9 +4,13 @@ function countPercentage() {
   document.getElementById("info").style.opacity = 0;
   document.getElementById("info").style.visibility = 'hidden';
 
-  var salary = parseInt(document.getElementById("salary").value);
-  var age = parseInt(document.getElementById("age").value);
-  var exp = parseInt(document.getElementById("exp").value);
+  document.getElementById("salary").value) = Math.abs(parseInt(document.getElementById("salary").value));
+  document.getElementById("age").value) = Math.abs(parseInt(document.getElementById("salary").value));
+  document.getElementById("exp").value) = Math.abs(parseInt(document.getElementById("salary").value));
+
+  var salary = Math.abs(parseInt(document.getElementById("salary").value));
+  var age = Math.abs(parseInt(document.getElementById("age").value));
+  var exp = Math.abs(parseInt(document.getElementById("exp").value));
   var region = document.getElementById("region").value;
 
   if (!isNaN(salary) && !isNaN(exp)) {
