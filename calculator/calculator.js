@@ -5,8 +5,8 @@ function countPercentage() {
   document.getElementById("info").style.visibility = 'hidden';
 
   document.getElementById("salary").value = Math.abs(parseInt(document.getElementById("salary").value));
-  document.getElementById("age").value = Math.abs(parseInt(document.getElementById("salary").value));
-  document.getElementById("exp").value = Math.abs(parseInt(document.getElementById("salary").value));
+  document.getElementById("age").value = Math.abs(parseInt(document.getElementById("age").value));
+  document.getElementById("exp").value = Math.abs(parseInt(document.getElementById("exp").value));
 
   var salary = Math.abs(parseInt(document.getElementById("salary").value));
   var age = Math.abs(parseInt(document.getElementById("age").value));
