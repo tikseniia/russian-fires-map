@@ -4,14 +4,23 @@ function countPercentage() {
   document.getElementById("info").style.opacity = 0;
   document.getElementById("info").style.visibility = 'hidden';
 
-  document.getElementById("salary").value = Math.abs(parseInt(document.getElementById("salary").value));
-  document.getElementById("age").value = Math.abs(parseInt(document.getElementById("age").value));
-  document.getElementById("exp").value = Math.abs(parseInt(document.getElementById("exp").value));
-
   var salary = Math.abs(parseInt(document.getElementById("salary").value));
   var age = Math.abs(parseInt(document.getElementById("age").value));
   var exp = Math.abs(parseInt(document.getElementById("exp").value));
   var region = document.getElementById("region").value;
+
+  // check numbers
+  if (exp/age > .9) {
+    alert('Работаете с младенчества? Проверьте стаж');
+    exp = age;
+  }
+  if (age < 16) {
+    alert('В стаж идет только официальная работа с 16 лет');
+  }
+
+  document.getElementById("salary").value = Math.abs(parseInt(document.getElementById("salary").value));
+  document.getElementById("age").value = Math.abs(parseInt(document.getElementById("age").value));
+  document.getElementById("exp").value = Math.abs(parseInt(document.getElementById("exp").value));
 
   if (!isNaN(salary) && !isNaN(exp)) {
     if (age < 31) {
