@@ -15,12 +15,12 @@ function countPercentage() {
     exp = age;
   }
   if (age < 16) {
-    alert('В стаж идет только официальная работа с 16 лет');
+    alert('В стаж идет только официальный опыт работы с 16 лет');
   }
 
-  document.getElementById("salary").value = Math.abs(parseInt(document.getElementById("salary").value));
-  document.getElementById("age").value = Math.abs(parseInt(document.getElementById("age").value));
-  document.getElementById("exp").value = Math.abs(parseInt(document.getElementById("exp").value));
+  document.getElementById("salary").value = salary;
+  document.getElementById("age").value = age;
+  document.getElementById("exp").value = exp;
 
   if (!isNaN(salary) && !isNaN(exp)) {
     if (age < 31) {
