@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  overflow-y: hidden;
+  font-family: Helvetica, Arial
+}
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+.title {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  background: rgba(255,255,255, .7);
+  z-index: 1000;
+}
+.legend {
+  display: inline-flex;
+  position: absolute;
+  left: 5px;
+  bottom: 10px;
+  padding: 10px;
+  z-index: 1000;
+}
+.legend-color {
+  height: 15px;
+  width: 15px;
+  margin-right: 5px;
+}
+.legend-text {
+  margin-right: 10px;
+  color: #eee;
+  font-size: 10px;
+  text-align: center;
+}
+
+/* MAP */
+#mapid {
+  height: 100vh;
+  width: 100%;
+}
+.mapboxgl-popup {
+  max-width: 400px;
+  z-index: 1500;
+  opacity: .8
+}
+.mapboxgl-popup p {
+  margin: 0;
+}
+
+/* CALCULATOR */
+.calculator {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  width: 300px;
+  height: 500px;
+  max-height: 100%;
+  background: rgba(0,0,0,.3);
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 10px 10px 0 0 rgba(0,0,0,.7);
+  padding: 0 20px;
+  z-index: 1000;
+}
+.calculator h4 {
+  margin: 0;
+  opacity: .8;
+  font-size: 12px;
+}
+.calculator p {
+  line-height: 1.3;
+  font-size: 14px;
+  margin: 0;
+}
+.calculator a {
+  color: #fff;
+  text-decoration: underline;
+}
+label, input, select {display: block;}
+input, select {
+  width: 100%;
+  padding: 3px 5px;
+  margin: 3px 0;
+  background: #000;
+  border: 1px solid #fafafa7a;
+  color: #fff;
+  box-shadow: none;
+}
+label {margin-top: 15px;}
+#output {
+  margin: 15px;
+}
+#output h3 {margin-bottom: 0;}
+#output p {
+  font-size: 14px;
+  line-height: 1.1;
+  transition: all 5s ease; color: #eee;
+}
+#output span {
+  color: #a3a0ff;
+  text-decoration: underline;
+}
+#output span:hover {
+  cursor: pointer;
+  color: #524cfe;
+}
+#info {
+  visibility: hidden;
+  opacity: 0;
+  padding: 10px;
+  background: #4848486b;
+  border-left: 10px solid #100080;
+  margin: 15px 0;
+  color: #eee;
+}
+#info p {
+  line-height: 1;
+  font-size: 12px;
+  opacity: .9}
+#count {
+  padding: 5px;
+  background: #423cfd;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+}
+#count:hover {
+  cursor: pointer;
+  background: #2900bd;
+}
+
+/* MEDIA */
+@media screen and (max-width: 900px) {
+  .title {max-width: 50%;}
+  .calculator {top: 0; bottom: 0; right: 0; overflow-y: scroll; overflow-x: hidden;}
+}
+@media screen and (max-width: 600px) {
+  .title {display: none;}
+  .calculator {top: 0; bottom: 0; right: 0; width: 80%; height: 100vh; padding: 10px 10%; border-radius: 0; box-shadow: none;}
+}
