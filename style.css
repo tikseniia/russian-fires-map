@@ -1,14 +1,9 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #333;
+  /* background-color: #333; */
   overflow-y: hidden;
   font-family: Helvetica, Arial
-}
-.container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
 }
 .title {
   position: absolute;
@@ -36,10 +31,15 @@ body {
   font-size: 10px;
   text-align: center;
 }
+.mapboxgl-popup-content {
+  box-shadow: none;
+}
+.mapboxgl-popup-content h3 {margin: 0;}
+.mapboxgl-popup-content p {margin: 0;}
 
 /* MAP */
 #mapid {
-  height: 100vh;
+  height: 70vh;
   width: 100%;
 }
 .mapboxgl-popup {

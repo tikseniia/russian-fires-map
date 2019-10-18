@@ -1,59 +1,36 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidGlrc2VuaWlhIiwiYSI6ImNqbzBobGpkZTAwd2Mza2xvZ2F4bTk1eG4ifQ.AWFalA05G9xWxDQqFOFBWA';
 var mymap = new mapboxgl.Map({
     container: 'mapid',
-    style: 'mapbox://styles/mapbox/dark-v9',
-    center: [130.570311, 67.456381],
-    zoom: 1.75,
-    maxZoom: 1.75,
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: [100.570311, 67.456381],
+    zoom: 2,
+    maxZoom: 3,
     minZoom: 1.5,
 });
 
-var getColorPopulation = function(p) {
-  return p > 500000 ? '#100080' :
-         p > 200000 ? '#2900bd' :
-         p > 100000 ? '#2a1ae3' :
-         p > 50000  ? '#312afc' :
-         p > 10000  ? '#423cfd' :
-         p > 5000   ? '#524cfe' :
-         p > 1000   ? '#7678fe' :
-                      '#a3a0ff' ;
-}
-
 var getColorCoef = function(p) {
-  return p == 2   ? '#100080' :
-         p == 1.8 ? '#2900bd' :
-         p == 1.7 ? '#2a1ae3' :
-         p == 1.6 ? '#312afc' :
-         p == 1.5 ? '#423cfd' :
-         p == 1.4 ? '#524cfe' :
-         p == 1.3 ? '#7678fe' :
-                    '#a3a0ff' ;
-}
-
-function countPopulation(region) {
-  var population = 0;
-  for (var k in sregion) {
-    population = population + region.subjects[k].population[0].count
-  }
-  console.log(region.name+' - '+population);
+  return p > 1.9   ? '#b71c1c' :
+         p > 1.6 ? '#c62828' :
+         p > 1.3 ? '#d32f2f' :
+         p > 1.0 ? '#e53935' :
+         p > 0.8 ? '#f44336' :
+         p > 0.7 ? '#ef5350' :
+         p > 0.5 ? '#e57373' :
+         p > 0.3 ? '#ef9a9a' :
+         p > 0.1 ? '#ffcdd2':
+                   '#ffebee'
 }
 
 mymap.on('load', function () {
-  for (var i=0; i<Object.keys(NordRegions.regions).length; i++) {
+  for (var i=0; i<Fires.length; i++) {
     for (var j=0; j<Object.keys(SubData.features).length; j++) {
 
-      var name = NordRegions.regions[i].name;
-      var coef = Benefits_b30.regions[name].coef;
-      var population = NordRegions.regions[i].population;
+      var name = Fires[i].region;
+      var sq = Fires[i]['2019'];
 
-      if ((name == SubData.features[j].properties.name && name != 'Тюменская область') ||
-        (Object.keys(NordRegions.regions[i].subjects).includes(SubData.features[j].properties.name))) {
+      if (name == SubData.features[j].properties.name) {
 
-        if (Object.keys(NordRegions.regions[i].subjects)[0] != 'all') {
-          var description = '<h3>'+name+'</h3><p>Минимальный коэффициент: '+coef+'</p><p>Население на территории Крайнего Севера: '+population+'</p><p>Отнесены к Крайнему Северу: '+Object.keys(NordRegions.regions[i].subjects)+'</p>'
-        } else {
-          var description = '<h3>'+name+'</h3><p>Минимальный коэффициент: '+coef+'</p><p>Население на территории Крайнего Севера: '+population+'</p>'
-        }
+        var description = '<h3>'+name+'</h3><h6>Горело <b>'+Math.round(sq*100)/100+'%</b> территории</h6>'
 
         mymap.addLayer({
             'id': SubData.features[j].id,
@@ -72,7 +49,8 @@ mymap.on('load', function () {
                   }
               },
               'paint': {
-                  'fill-color': getColorCoef(coef)
+                  'fill-color': getColorCoef(sq),
+                  'fill-outline-color': '#ffffff'
               }
         });
 
@@ -102,4 +80,54 @@ mymap.on('load', function () {
       }
     }
   }
-})
+});
+
+
+$('.btn').click(function() {
+    var year = $(this).attr('data-year');
+
+    for (var i=0; i<Fires.length; i++) {
+        for (var j=0; j<Object.keys(SubData.features).length; j++) {
+
+          var name = Fires[i].region;
+          var sq = Fires[i][year];
+
+          if (name == SubData.features[j].properties.name) {
+              if (mymap.getLayer(SubData.features[j].id)){
+                    mymap.removeLayer(SubData.features[j].id);
+                }
+
+              if (mymap.getSource(SubData.features[j].id)) {
+                  mymap.removeSource(SubData.features[j].id);
+              }
+
+            var description = '<h3>'+name+'</h3><h6>Горело <b>'+Math.round(sq*100)/100+'%</b> территории</h6>'
+
+            mymap.addLayer({
+                'id': SubData.features[j].id,
+                'type': 'fill',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                        'type': SubData.features[j].type,
+                        'properties': {
+                          'description': description,
+                        },
+                        'geometry': {
+                            'type': SubData.features[j].geometry.type,
+                            'coordinates': SubData.features[j].geometry.coordinates
+                        }
+                      }
+                  },
+                  'paint': {
+                      'fill-color': getColorCoef(sq),
+                      'fill-outline-color': '#ffffff'
+                  }
+            });
+          }
+        }
+    }
+    $('.btn').removeClass('btn-dark').addClass('btn-outline-dark');
+
+    $(this).removeClass('btn-outline-dark').addClass('btn-dark');
+});

@@ -1,78 +1,33 @@
-<!DOCTYPE html5>
+<!DOCTYPE html>
 <html>
 <head>
   <title>Крайний Север: расчет зарплаты</title>
   <meta name="viewport" content="width=device-width, user-scalable=no" />
+  <meta charset="UTF-8" />
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
-  <link rel="icon" href="/northern-benefits/favicon.png" type="image/x-icon" />
 </head>
 
 <body>
   <div class="container">
-    <h2 class="title">Районные коэффициенты Крайнего Севера</h2>
-    <div class="legend">
-      <div class="legend-color" style="background: #100080"></div><div class="legend-text">2</div>
-      <div class="legend-color" style="background: #2900bd"></div><div class="legend-text">1.8</div>
-      <div class="legend-color" style="background: #2a1ae3"></div><div class="legend-text">1.7</div>
-      <div class="legend-color" style="background: #312afc"></div><div class="legend-text">1.6</div>
-      <div class="legend-color" style="background: #423cfd"></div><div class="legend-text">1.5</div>
-      <div class="legend-color" style="background: #524cfe"></div><div class="legend-text">1.4</div>
-      <div class="legend-color" style="background: #7678fe"></div><div class="legend-text">1.3</div>
-      <div class="legend-color" style="background: #a3a0ff"></div><div class="legend-text">other</div>
+     <h1>Лесные пожары в России</h1>
+
+    <div class="btn-group">
+     <div class="btn btn-sm btn-dark" data-year="2019">9 мес 2019 года</div>
+     <div class="btn btn-sm btn-outline-dark" data-year="i_2019">I полугодие 2019</div>
+     <div class="btn btn-sm btn-outline-dark" data-year="2018">2018 год</div>
+     <div class="btn btn-sm btn-outline-dark" data-year="i_2018">I полугодие 2018</div>
     </div>
-    <div id="mapid"></div>
   </div>
-  <div class="calculator">
-    <h3>Расчет зарплаты в районах Крайнего Севера</h3>
-    <form>
-      <label>Оклад</label>
-      <input id="salary" name="salary" type="number" min="0" max="1000000" />
+  <div id="mapid"></div>
 
-      <label>Возраст</label>
-      <input id="age" name="age" type="number" min="0" max="70" />
-
-      <label>Стаж работы (лет)</label>
-      <input id="exp" name="exp" type="number" min="0" max="70" />
-
-      <label>Район работы</label>
-      <select id="region" name="region">
-        <option value='Чукотский АО'>Чукотский АО</option>
-        <option value='Северо-Эвенский район Магаданской области'>Северо-Эвенский район Магаданской области</option>
-        <option value='территории бывшего Корякского автономного округа (сейчас часть Камчатского края)'>территории бывшего Корякского автономного округа (сейчас часть Камчатского края)</option>
-        <option value='Алеутский район Камчатского края'>Алеутский район Камчатского края</option>
-        <option value='Северо-Эвенский район Магаданской области'>Северо-Эвенский район Магаданской области</option>
-        <option value='острова Северного Ледовитого океана и его морей (за исключением островов Белого моря)'>острова Северного Ледовитого океана и его морей (за исключением островов Белого моря)</option>
-        <option value='Архангельская область'>Архангельская область</option>
-        <option value='Мурманская область'>Мурманская область</option>
-        <option value='Магаданская область'>Магаданская область</option>
-        <option value='Камчатский край'>Камчатский край</option>
-        <option value='Тюменская область'>Тюменская область</option>
-        <option value='Иркутская область'>Иркутская область</option>
-        <option value='Сахалинская область'>Сахалинская область</option>
-        <option value='Республика Коми'>Республика Коми</option>
-        <option value='Ханты-Мансийский АО'>Ханты-Мансийский АО</option>
-        <option value='Республика Карелия'>Республика Карелия</option>
-        <option value='Республика Тыва'>Республика Тыва</option>
-        <option value='Красноярский край'>Красноярский край</option>
-        <option value='Хабаровский край'>Хабаровский край</option>
-        <option value='Камчатский край'>Камчатский край</option>
-        <option value='Республика Саха (Якутия)'>Республика Саха (Якутия)</option>
-      </select>
-
-      <div id="output"></div>
-      <div id="info"></div>
-      <div id="count">Рассчитать</div>
-    </form>
-  </div>
-
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="data/russia.js" charset="UTF-8"></script>
-  <script src="data/nord.js" charset="UTF-8"></script>
-  <script src="data/benefits.js" charset="UTF-8"></script>
+  <script src="data/fires.js" charset="UTF-8"></script>
   <script src="map/map.js" charset="UTF-8"></script>
-  <script src="calculator/calculator.js" charset="UTF-8"></script>
 </body>
 </html>
