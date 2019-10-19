@@ -10,9 +10,14 @@
   <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
+ <link rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/plottable.js/2.0.0/plottable.css" />
 </head>
 
 <body>
+ <style>
+  .bounding-box, .background-fill {fill: transparent;}
+  .container {margin-top: 30px; margin-bottom: 30px;}
+ </style>
   <div class="container">
      <h1>Лесные пожары в России</h1>
 
@@ -22,12 +27,57 @@
      <div class="btn btn-sm btn-outline-dark" data-year="2018">2018 год</div>
      <div class="btn btn-sm btn-outline-dark" data-year="i_2018">I полугодие 2018</div>
     </div>
+
   </div>
   <div id="mapid"></div>
+
+ <div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+     <h3>Смотрим на август 2019</h3>
+     <p>На графике показано, сколько в среднем гектаров замли горело в разные месяца года.</p>
+     <svg id="graph" height="300"></svg>
+    </div>
+   </div>
+ </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="data/russia.js" charset="UTF-8"></script>
   <script src="data/fires.js" charset="UTF-8"></script>
   <script src="map/map.js" charset="UTF-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/plottable.js/2.0.0/plottable.js"></script>
+
+ <script>
+  var data = [{"year": 2016, "month": 'Янв', "sq": 0.0, "fire_num": 0}, {"year": 2016, "month": 'Фев', "sq": 0.0, "fire_num": 0}, {"year": 2016, "month": 'Мар', "sq": 0.0, "fire_num": 0}, {"year": 2016, "month": 'Апр', "sq": 0.0, "fire_num": 0}, {"year": 2016, "month": 'Май', "sq": 3.7333333333333334, "fire_num": 0}, {"year": 2016, "month": 'Июн', "sq": 1454.6, "fire_num": 3}, {"year": 2016, "month": 'Июл', "sq": 57721.433333333334, "fire_num": 12}, {"year": 2016, "month": 'Авг', "sq": 0, "fire_num": 0},{"year": 2016, "month": 'Сен', "sq": 98.56666666666666, "fire_num": 1}, {"year": 2016, "month": 'Окт', "sq": 288.06666666666666, "fire_num": 1}, {"year": 2016, "month": 'Ноя', "sq": 885.4333333333333, "fire_num": 1}, {"year": 2016, "month": 'Дек', "sq": 0.0, "fire_num": 0}, {"year": 2017, "month": 'Янв', "sq": 0.0, "fire_num": 0}, {"year": 2017, "month": 'Фев', "sq": 0.0, "fire_num": 0}, {"year": 2017, "month": 'Мар', "sq": 109.6, "fire_num": 1}, {"year": 2017, "month": 'Апр', "sq": 2246.9333333333334, "fire_num": 27}, {"year": 2017, "month": 'Май', "sq": 6181.233333333334, "fire_num": 38}, {"year": 2017, "month": 'Июн', "sq": 95166.33333333333, "fire_num": 127}, {"year": 2017, "month": 'Июл', "sq": 456634.7, "fire_num": 221}, {"year": 2017, "month": 'Авг', "sq": 1060121.6, "fire_num": 202}, {"year": 2017, "month": 'Сен', "sq": 60428.9, "fire_num": 7}, {"year": 2017, "month": 'Окт', "sq": 2414.366666666667, "fire_num": 30}, {"year": 2017, "month": 'Ноя', "sq": 682.1333333333333, "fire_num": 4}, {"year": 2017, "month": 'Дек', "sq": 0.0, "fire_num": 0}, {"year": 2018, "month": 'Янв', "sq": 0.1, "fire_num": 0}, {"year": 2018, "month": 'Фев', "sq": 128.1, "fire_num": 0}, {"year": 2018, "month": 'Мар', "sq": 60.6, "fire_num": 1}, {"year": 2018, "month": 'Апр', "sq": 61926.1, "fire_num": 51}, {"year": 2018, "month": 'Май', "sq": 76200.63333333333, "fire_num": 50}, {"year": 2018, "month": 'Июн', "sq": 175577.96666666667, "fire_num": 143}, {"year": 2018, "month": 'Июл', "sq": 1672315.4, "fire_num": 358}, {"year": 2018, "month": 'Авг', "sq": 1346120.8666666667, "fire_num": 152}, {"year": 2018, "month": 'Сен', "sq": 137571.63333333333, "fire_num": 23}, {"year": 2018, "month": 'Окт', "sq": 29.266666666666666, "fire_num": 1}, {"year": 2018, "month": 'Ноя', "sq": 6.733333333333333, "fire_num": 0}, {"year": 2018, "month": 'Дек', "sq": 0.0, "fire_num": 0}, {"year": 2019, "month": 'Янв', "sq": 14.6, "fire_num": 0}, {"year": 2019, "month": 'Фев', "sq": 26796.666666666668, "fire_num": 13}, {"year": 2019, "month": 'Мар', "sq": 1211.4666666666667, "fire_num": 3}, {"year": 2019, "month": 'Апр', "sq": 9596.666666666666, "fire_num": 25}, {"year": 2019, "month": 'Май', "sq": 41709.76666666667, "fire_num": 58}, {"year": 2019, "month": 'Июн', "sq": 232647.23333333334, "fire_num": 126}, {"year": 2019, "month": 'Июл', "sq": 1387109.8333333333, "fire_num": 419}, {"year": 2019, "month": 'Авг', "sq": 1964857.6666666667, "fire_num": 367}, {"year": 2019, "month": 'Сен', "sq": 71023.53333333334, "fire_num": 66}, {"year": 2019, "month": 'Окт', "sq": 35.86666666666667, "fire_num": 1}]
+</script>
+
+<script>
+ var xScale = new Plottable.Scales.Category();
+var yScale = new Plottable.Scales.Category();
+
+var xAxis = new Plottable.Axes.Category(xScale, "bottom");
+var yAxis = new Plottable.Axes.Category(yScale, "left");
+
+var colorScale = new Plottable.Scales.InterpolatedColor();
+colorScale.range(['#ffebee', '#ffcdd2', '#ef9a9a', '#e57373', '#e57373', '#ef5350', '#f44336', '#e53935', '#d32f2f', '#b71c1c']);
+
+// '#ffcdd2', '#ef9a9a', '#e57373', '#e57373', '#ef5350', '#f44336', '#e53935', '#d32f2f',
+
+var plot = new Plottable.Plots.Rectangle()
+  .addDataset(new Plottable.Dataset(data))
+  .x(function(d) { return d.month }, xScale)
+  .y(function(d) { return d.year }, yScale)
+  .attr("fill", function(d) { return d.sq; }, colorScale)
+  .attr("stroke", "#fff")
+  .attr("stroke-width", 2);
+
+var table = new Plottable.Components.Table([
+  [yAxis, plot],
+  [null,  xAxis]
+]);
+
+table.renderTo("svg#graph");
+</script>
 </body>
 </html>

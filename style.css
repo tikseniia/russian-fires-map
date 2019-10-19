@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   /* background-color: #333; */
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   font-family: Helvetica, Arial
 }
 .title {
@@ -39,7 +39,7 @@ body {
 
 /* MAP */
 #mapid {
-  height: 70vh;
+  height: 500px;
   width: 100%;
 }
 .mapboxgl-popup {
